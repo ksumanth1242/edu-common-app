@@ -21,12 +21,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --silent --watchAll=false",
+    "test:ci": "react-scripts test --coverage --silent --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write src/**/*.{ts,tsx,json,css,md}",
     "format:check": "prettier --check src/**/*.{ts,tsx,json,css,md}",
     "type-check": "tsc --noEmit",
+    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "audit:security": "npm audit --audit-level moderate",
+    "audit:fix": "npm audit fix",
+    "commit": "git add . && git commit",
     "prepare": "husky install"
   },
   "eslintConfig": {
@@ -47,6 +53,33 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/index.tsx",
+      "!src/reportWebVitals.ts",
+      "!src/setupTests.ts",
+      "!src/config/**",
+      "!src/constants/**",
+      "!src/types/**",
+      "!src/utils/**",
+      "!src/services/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ]
+  },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "eslint --fix",
@@ -57,6 +90,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.6.0",
+    "@commitlint/config-conventional": "^18.6.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint-plugin-import": "^2.31.0",
@@ -64,7 +99,10 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^8.0.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^13.0.0",
-    "prettier": "^2.8.0"
+    "npm-audit-reporter": "^1.0.3",
+    "prettier": "^2.8.0",
+    "webpack-bundle-analyzer": "^4.10.1"
   }
 }
