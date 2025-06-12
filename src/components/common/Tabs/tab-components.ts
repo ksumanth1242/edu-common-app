@@ -67,29 +67,6 @@ export const Tab = styled.div<Props>`
     }
   }}
 
-  ${({ theme }) => {
-    if (theme === 'svaas2') {
-      return `
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 18px;        
-        color: ${primaryColor};
-        &::after {
-          content: "";
-          width: inherit;
-          height: 2px;
-          border-top-left-radius: 6px;
-          border-top-right-radius: 6px;
-          position: absolute;
-          bottom: -1px;
-          left: 0;
-          right: 0;
-          margin: 0 auto;          
-        }
-      `;
-    }
-  }}
-
   ${({ isSelected, type, isDisabled }) => {
     if (isDisabled) {
       return `	
