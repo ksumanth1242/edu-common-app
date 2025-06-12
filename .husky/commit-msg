@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx --no -- commitlint --edit ${1} 
+# Check if commit message validation is enabled
+if node scripts/check-config.js commit-msg > /dev/null 2>&1; then
+  npx --no -- commitlint --edit ${1}
+else
+  echo "⚠️  Commit message validation is disabled - skipping commitlint"
+fi 

@@ -17,6 +17,7 @@
     "@types/react-dom": "^19.1.6",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
@@ -41,7 +42,13 @@
     "audit:security": "npm audit --audit-level moderate",
     "audit:fix": "npm audit fix",
     "commit": "git add . && git commit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "checks:status": "node scripts/check-config.js",
+    "checks:demo": "node scripts/demo-checks.js",
+    "checks:enable-all": "node scripts/manage-checks.js enable-all",
+    "checks:disable-all": "node scripts/manage-checks.js disable-all",
+    "checks:enable-eslint": "node -e \"require('fs').writeFileSync('.env.local', 'ENABLE_ESLINT=true\\n', {flag: 'a'})\"",
+    "checks:disable-eslint": "node -e \"require('fs').writeFileSync('.env.local', 'ENABLE_ESLINT=false\\n', {flag: 'a'})\""
   },
   "eslintConfig": {
     "extends": [
@@ -88,15 +95,7 @@
       "html"
     ]
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "src/**/*.{json,css,md}": [
-      "prettier --write"
-    ]
-  },
+  "lint-staged": "./lint-staged.config.js",
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
     "@commitlint/config-conventional": "^18.6.0",
