@@ -15,20 +15,24 @@ import {
   Container,
   Divider,
   Collapse,
+  Button,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
-  Dashboard as ComponentsIcon,
+  Dashboard as DashboardIcon,
   SmartButton as ButtonIcon,
   Input as FormsIcon,
   Tab as NavigationIcon,
   Feedback as FeedbackIcon,
   Info as AboutIcon,
+  Login as LoginIcon,
+  Logout as LogoutIcon,
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material';
 import { primaryColor } from '../styles';
+import { useAuth } from '../context/AuthContext';
 
 const drawerWidth = 280;
 
@@ -36,6 +40,7 @@ interface NavigationItem {
   title: string;
   path: string;
   icon: React.ReactNode;
+  requiresAuth?: boolean;
   children?: NavigationItem[];
 }
 
@@ -46,9 +51,15 @@ const navigationItems: NavigationItem[] = [
     icon: <HomeIcon />,
   },
   {
+    title: 'Dashboard',
+    path: '/dashboard',
+    icon: <DashboardIcon />,
+    requiresAuth: true,
+  },
+  {
     title: 'Components',
     path: '/components',
-    icon: <ComponentsIcon />,
+    icon: <FeedbackIcon />,
     children: [
       {
         title: 'Buttons',
@@ -83,6 +94,7 @@ export const MainLayout: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [componentsOpen, setComponentsOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -92,12 +104,24 @@ export const MainLayout: React.FC = () => {
     setComponentsOpen(!componentsOpen);
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   const isActive = (path: string) => {
     if (path === '/') {
       return location.pathname === '/';
     }
     return location.pathname.startsWith(path);
   };
+
+  // Filter navigation items based on authentication
+  const filteredNavigationItems = navigationItems.filter(item => {
+    if (item.requiresAuth && !isAuthenticated) {
+      return false;
+    }
+    return true;
+  });
 
   const NavList = () => (
     <Box sx={{ width: drawerWidth }}>
@@ -113,7 +137,7 @@ export const MainLayout: React.FC = () => {
       </Toolbar>
       <Divider />
       <List>
-        {navigationItems.map(item => (
+        {filteredNavigationItems.map(item => (
           <React.Fragment key={item.title}>
             {item.children ? (
               <>
@@ -206,9 +230,34 @@ export const MainLayout: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             React Components Library
           </Typography>
+          
+          {/* Auth buttons */}
+          {isAuthenticated ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography variant="body2">
+                Welcome, {user?.name}
+              </Typography>
+              <Button
+                color="inherit"
+                startIcon={<LogoutIcon />}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </Box>
+          ) : (
+            <Button
+              color="inherit"
+              component={Link}
+              to="/login"
+              startIcon={<LoginIcon />}
+            >
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 

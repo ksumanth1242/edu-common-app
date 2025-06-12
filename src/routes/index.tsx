@@ -1,57 +1,20 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MainLayout, EmbeddedLayout } from '../layouts';
-import {
-  HomePage,
-  ComponentsPage,
-  ButtonsPage,
-  FormsPage,
-  NavigationPage,
-  FeedbackPage,
-  AboutPage,
-  NotFoundPage,
-} from '../pages';
+import { routeConfig } from './route-config';
+import { generateRoutes } from './route-generator';
 
-// Define the common routes for both layouts
-const appRoutes = [
-  {
-    index: true,
-    element: <HomePage />,
-  },
-  {
-    path: 'components',
-    element: <ComponentsPage />,
-  },
-  {
-    path: 'components/buttons',
-    element: <ButtonsPage />,
-  },
-  {
-    path: 'components/forms',
-    element: <FormsPage />,
-  },
-  {
-    path: 'components/navigation',
-    element: <NavigationPage />,
-  },
-  {
-    path: 'components/feedback',
-    element: <FeedbackPage />,
-  },
-  {
-    path: 'about',
-    element: <AboutPage />,
-  },
-];
-
+// Get environment configuration
 const isEmbedded = process.env.REACT_APP_EMBEDDED === 'true';
+
+// Generate routes from configuration
+const appRoutes = generateRoutes(routeConfig);
 
 // Choose layout based on environment variable
 const routerConfig = [
   {
     path: '/',
     element: isEmbedded ? <EmbeddedLayout /> : <MainLayout />,
-    errorElement: <NotFoundPage />,
     children: appRoutes,
   },
 ];
@@ -62,3 +25,8 @@ export const router = createBrowserRouter(routerConfig);
 export const AppRouter: React.FC = () => {
   return <RouterProvider router={router} />;
 };
+
+// Export route configuration for use in navigation
+export { routeConfig } from './route-config';
+export { getRouteByPath, getProtectedRoutes, getRoutesByRole } from './route-config';
+export type { RouteConfig, ProtectedRouteProps, NavigationItem } from './types';
