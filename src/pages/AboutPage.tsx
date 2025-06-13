@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Box, Paper, Chip } from '@mui/material';
-
+import { useSupabase } from '@app/context/SupabaseContext';
+import { useAppData } from '@app/context/AppDataContext';
 const technologies = [
   'React 19.1.0',
   'TypeScript 4.9.5',
@@ -11,10 +12,23 @@ const technologies = [
 ];
 
 export const AboutPage: React.FC = () => {
+
+  const { session, supabase } = useSupabase();
+  const { user, setUser, globalEvent, setGlobalEvent } = useAppData();
+
+  // useEffect(() => {
+  //   alert(session)
+  //   console.log(supabase)
+  // }, [])
+
+    useEffect(() => {
+      setUser('narsi')
+  }, [])
+
   return (
     <>
       <Typography variant="h3" component="h1" gutterBottom>
-        About This Library
+        About This Library--
       </Typography>
 
       <Typography variant="body1" paragraph color="text.secondary">
@@ -26,7 +40,7 @@ export const AboutPage: React.FC = () => {
         {/* Overview */}
         <Paper elevation={2} sx={{ p: 3 }}>
           <Typography variant="h5" gutterBottom>
-            Overview
+            Overview-{user}
           </Typography>
           <Typography paragraph>
             This component library demonstrates best practices for building

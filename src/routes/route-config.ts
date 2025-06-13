@@ -45,11 +45,13 @@ export const routeConfig: RouteConfig[] = [
     path: '/components/buttons',
     component: ButtonsPage,
     title: 'Button Components',
+    requiresAuth: false
   },
   {
     path: '/components/forms',
     component: FormsPage,
     title: 'Form Components',
+    requiresAuth: true
   },
   {
     path: '/components/navigation',

@@ -1,38 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { theme } from './styles/theme';
-import { AppRouter } from './routes';
-import { GlobalProvider, useGlobalContext } from './context/GlobalContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { initializeHttpClient } from './api/httpClient';
+import { theme } from '@app/styles/theme';
+import { AppRouter } from '@app/routes';
+import { AuthProvider } from '@app/context/AuthContext';
+import { SupabaseProvider } from '@app/context/SupabaseContext';
+import { AppDataProvider, useAppData } from '@app/context/AppDataContext';
 
-// Component to initialize the HTTP client
-const AppInitializer: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { setLoading } = useGlobalContext();
-  const { logout } = useAuth();
-
-  // Initialize the client once when the app loads
-  React.useMemo(() => {
-    initializeHttpClient({ setLoading, logout });
-  }, [setLoading, logout]);
-
-  return <>{children}</>;
-};
-
+// import { initializeHttpClient } from '@app/api/httpClient';
+// import { useSupabase } from '@app/context/SupabaseContext';
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalProvider>
-        <AuthProvider>
-          <AppInitializer>
+      <SupabaseProvider>
+        <AppDataProvider>
+          <AuthProvider>
             <AppRouter />
-          </AppInitializer>
-        </AuthProvider>
-      </GlobalProvider>
+          </AuthProvider>
+        </AppDataProvider>
+      </SupabaseProvider>
     </ThemeProvider>
   );
 }

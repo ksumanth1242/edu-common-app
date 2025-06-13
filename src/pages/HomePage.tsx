@@ -12,6 +12,7 @@ import {
   AppDropdown,
   AppIcon,
 } from '../components/common';
+import { useAppData } from '@app/context/AppDataContext';
 
 export const HomePage: React.FC = () => {
   const [textValue, setTextValue] = useState('');
@@ -20,7 +21,7 @@ export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Tab 1');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dropdownValue, setDropdownValue] = useState<string | number>('');
-
+  const { user, setUser, globalEvent, setGlobalEvent } = useAppData();
   const handleSearch = (value: string) => {
     // Search functionality implementation would go here
     alert(`Searching for: ${value}`);
@@ -58,7 +59,7 @@ export const HomePage: React.FC = () => {
         color="text.secondary"
       >
         Comprehensive collection of reusable styled components with Material UI
-        integration
+        integration--{user}
       </Typography>
 
       <Box display="flex" flexDirection="column" gap={4}>
