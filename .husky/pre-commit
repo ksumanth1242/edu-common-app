@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+# Check if pre-commit hooks are enabled
+if node scripts/check-config.js pre-commit > /dev/null 2>&1; then
+  npx lint-staged
+else
+  echo "⚠️  Pre-commit hooks are disabled - skipping lint-staged"
+fi

@@ -37,7 +37,7 @@ export default function AppTabs({
               type={type}
               key={`${label}-${index}`}
               style={
-                theme !== 'svaas2' && labels && labels.length !== 1
+                labels && labels.length !== 1
                   ? { width: `calc(100% / ${labels.length})` }
                   : {}
               }
