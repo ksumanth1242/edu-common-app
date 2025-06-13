@@ -10,7 +10,7 @@ import {
   FeedbackPage,
   AboutPage,
   NotFoundPage,
-} from '../pages';
+} from '@app/pages';
 
 // Define the common routes for both layouts
 const appRoutes = [

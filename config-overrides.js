@@ -1,4 +1,4 @@
-const { override } = require('customize-cra');
+const { override, addBabelPlugin } = require('customize-cra');
 
 // Disable ForkTsCheckerWebpackPlugin to resolve memory issues
 const disableForkTsChecker = () => (config) => {
@@ -10,5 +10,13 @@ const disableForkTsChecker = () => (config) => {
 };
 
 module.exports = override(
-  disableForkTsChecker()
-); 
+  disableForkTsChecker(),
+  addBabelPlugin([
+    'module-resolver',
+    {
+      alias: {
+        '@app': './src',
+      }
+    }
+  ])
+);
